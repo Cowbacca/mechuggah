@@ -1,0 +1,54 @@
+
+mechuggah.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+spike_turtle
+  rotate: false
+  xy: 1, 65
+  size: 258, 62
+  orig: 258, 62
+  offset: 0, 0
+  index: -1
+turtle_a
+  rotate: false
+  xy: 1, 1
+  size: 258, 62
+  orig: 258, 62
+  offset: 0, 0
+  index: -1
+newjelly_a
+  rotate: false
+  xy: 261, 1
+  size: 180, 126
+  orig: 180, 126
+  offset: 0, 0
+  index: -1
+white-square
+  rotate: false
+  xy: 443, 27
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+bubble
+  rotate: false
+  xy: 545, 57
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+speedup
+  rotate: false
+  xy: 617, 95
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+stuck
+  rotate: false
+  xy: 617, 61
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
