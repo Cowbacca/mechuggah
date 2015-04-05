@@ -5,6 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 
+import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.DefaultElevationComponent;
+import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.DefaultMovingComponent;
+import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.ElevationComponent;
+import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.MovingComponent;
 import uk.ac.rhul.cs.zwac076.mechuggah.event.EventManager;
 import uk.ac.rhul.cs.zwac076.mechuggah.event.PlayerInputEvent;
 import uk.ac.rhul.cs.zwac076.mechuggah.event.PlayerInputEventListener;
@@ -18,15 +22,19 @@ import uk.ac.rhul.cs.zwac076.mechuggah.maths.IntersectionChecker;
  * @author Angus J. Goldsmith
  * 
  */
-public class Player extends ElevationMovingActor implements EventListener {
+public class Player extends CollisionActor implements EventListener, MovingComponent, ElevationComponent {
     private Action powerUpAction;
     private Action inputAction;
     private AnimationComponent animationComponent;
+    private MovingComponent movingComponent;
+    private ElevationComponent elevationComponent;
 
     public Player(final AnimationComponent animationComponent, final float x, final float y, final float width,
             final float height, final float speed, final IntersectionChecker intersectionChecker) {
-        super(x, y, width, height, speed, intersectionChecker);
+        super(x, y, width, height, intersectionChecker);
         this.animationComponent = animationComponent;
+        movingComponent = new DefaultMovingComponent(speed, 10, this);
+        elevationComponent = new DefaultElevationComponent(1.2f, 1.2f, this);
         EventManager.getInstance().registerListener(ResetGameEvent.class, this);
         registerInputEventListener();
     }
@@ -41,6 +49,7 @@ public class Player extends ElevationMovingActor implements EventListener {
      */
     @Override
     public void act(final float delta) {
+        movingComponent.act(delta);
         if (inputAction != null && inputAction.act(delta)) {
             inputAction = null;
         }
@@ -90,12 +99,12 @@ public class Player extends ElevationMovingActor implements EventListener {
         EventManager.getInstance().publishEvent(new PlayerMovedEvent(getX(), getY(), true));
     }
 
-    @Override
-    protected void reset() {
+    public void reset() {
         setScale(1);
         powerUpAction = null;
         inputAction = null;
-        super.reset();
+        movingComponent.reset();
+        elevationComponent.reset();
 
     }
 
@@ -103,6 +112,46 @@ public class Player extends ElevationMovingActor implements EventListener {
     public boolean handle(Event event) {
         reset();
         return false;
+    }
+
+    @Override
+    public void moveUp() {
+        elevationComponent.moveUp();
+    }
+
+    @Override
+    public void moveDown() {
+        elevationComponent.moveDown();
+    }
+
+    @Override
+    public Action getMoveUpAction(float duration) {
+        return elevationComponent.getMoveUpAction(duration);
+    }
+
+    @Override
+    public Action getMoveDownAction(float duration) {
+        return elevationComponent.getMoveDownAction(duration);
+    }
+
+    @Override
+    public float calculateTimeTakenToTravel(float distance) {
+        return movingComponent.calculateTimeTakenToTravel(distance);
+    }
+
+    @Override
+    public void increaseSpeed(float speedIncrease) {
+        movingComponent.increaseSpeed(speedIncrease);
+    }
+
+    @Override
+    public void freeze() {
+        movingComponent.freeze();
+    }
+
+    @Override
+    public void unFreeze() {
+        movingComponent.unFreeze();
     }
 
 }

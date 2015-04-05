@@ -1,12 +1,12 @@
 package uk.ac.rhul.cs.zwac076.mechuggah.actor;
 
-import uk.ac.rhul.cs.zwac076.mechuggah.event.CollisionEvent;
-import uk.ac.rhul.cs.zwac076.mechuggah.event.EventManager;
-import uk.ac.rhul.cs.zwac076.mechuggah.maths.IntersectionChecker;
-
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import uk.ac.rhul.cs.zwac076.mechuggah.event.CollisionEvent;
+import uk.ac.rhul.cs.zwac076.mechuggah.event.EventManager;
+import uk.ac.rhul.cs.zwac076.mechuggah.maths.IntersectionChecker;
 
 /**
  * Actor with collision handling.
@@ -74,4 +74,16 @@ public class CollisionActor extends Actor implements Collidable {
 
     }
 
+
+    public void resetZ() {
+        z = 0;
+    }
+
+    public void decrementZ() {
+        z--;
+    }
+
+    public void incrementZ() {
+        z++;
+    }
 }

@@ -1,5 +1,8 @@
 package uk.ac.rhul.cs.zwac076.mechuggah.event;
 
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,10 +12,30 @@ import uk.ac.rhul.cs.zwac076.mechuggah.actor.Player;
 import uk.ac.rhul.cs.zwac076.mechuggah.input.Input;
 import uk.ac.rhul.cs.zwac076.mechuggah.input.InputHandlingStrategy;
 
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-
 public class PlayerInputEventListener implements EventListener {
+
+    private Player player;
+    private Map<Input, InputHandlingStrategy> inputHandlingStrategyMap;
+
+    public PlayerInputEventListener(Player player) {
+        this.player = player;
+        setupInputHandlerMap();
+    }
+
+    @Override
+    public boolean handle(Event event) {
+        PlayerInputEvent playerInputEvent = (PlayerInputEvent) event;
+        inputHandlingStrategyMap.get(playerInputEvent.getInputType()).handleInput();
+        return false;
+    }
+
+    private void setupInputHandlerMap() {
+        inputHandlingStrategyMap = new HashMap<Input, InputHandlingStrategy>();
+        inputHandlingStrategyMap.put(Input.JUMP, new JumpInputHandlingStrategy(player));
+        inputHandlingStrategyMap.put(Input.SLIDE_LEFT, new SlideLeftInputHandlingStrategy(player));
+        inputHandlingStrategyMap.put(Input.SLIDE_RIGHT, new SlideRightInputHandlingStrategy(player));
+        inputHandlingStrategyMap.put(Input.SHAKE, new ShakeInputHandlingStrategy(player));
+    }
 
     private final class ShakeInputHandlingStrategy extends InputHandlingStrategy {
         private ShakeInputHandlingStrategy(Player player) {
@@ -57,31 +80,8 @@ public class PlayerInputEventListener implements EventListener {
 
         @Override
         public void handleInput() {
-            player.addInputAction(new JumpAction(player));
+            player.addInputAction(new JumpAction(player, player));
 
         }
-    }
-
-    private Player player;
-    private Map<Input, InputHandlingStrategy> inputHandlingStrategyMap;
-
-    public PlayerInputEventListener(Player player) {
-        this.player = player;
-        setupInputHandlerMap();
-    }
-
-    @Override
-    public boolean handle(Event event) {
-        PlayerInputEvent playerInputEvent = (PlayerInputEvent) event;
-        inputHandlingStrategyMap.get(playerInputEvent.getInputType()).handleInput();
-        return false;
-    }
-
-    private void setupInputHandlerMap() {
-        inputHandlingStrategyMap = new HashMap<Input, InputHandlingStrategy>();
-        inputHandlingStrategyMap.put(Input.JUMP, new JumpInputHandlingStrategy(player));
-        inputHandlingStrategyMap.put(Input.SLIDE_LEFT, new SlideLeftInputHandlingStrategy(player));
-        inputHandlingStrategyMap.put(Input.SLIDE_RIGHT, new SlideRightInputHandlingStrategy(player));
-        inputHandlingStrategyMap.put(Input.SHAKE, new ShakeInputHandlingStrategy(player));
     }
 }

@@ -2,7 +2,7 @@ package uk.ac.rhul.cs.zwac076.mechuggah.action;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
 
-import uk.ac.rhul.cs.zwac076.mechuggah.actor.Moving;
+import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.MovingComponent;
 
 public class SpeedUpAction extends Action {
     private float speedIncrease;
@@ -17,7 +17,7 @@ public class SpeedUpAction extends Action {
 
     @Override
     public boolean act(float delta) {
-        Moving player = (Moving) getActor();
+        MovingComponent player = (MovingComponent) getActor();
         if (time == 0) {
             player.increaseSpeed(speedIncrease);
         }
