@@ -24,8 +24,6 @@ public class DefaultElevationComponentTest {
     private static final float UP_X_SCALE = 1.2f;
     private static final float UP_Y_SCALE = 1.3f;
     private static final float DURATION = 2.0f;
-
-    private static final float DURATION = 2.0f;
     public static final float ALTERNATIVE_ORIGINAL_X_SCALE = 15f;
     private static final float ORIGINAL_Y_SCALE = 0.9f;
     private static final float ORIGINAL_X_SCALE = 0.8f;
