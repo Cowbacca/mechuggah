@@ -1,8 +1,12 @@
 package uk.ac.rhul.cs.zwac076.mechuggah.listener;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.utils.Array;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,13 +17,8 @@ import org.mockito.MockitoAnnotations;
 import uk.ac.rhul.cs.zwac076.mechuggah.actor.Player;
 import uk.ac.rhul.cs.zwac076.mechuggah.input.PlayerGestureListener;
 
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.utils.Array;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 
 public class PlayerListenerTest {
 
@@ -41,7 +40,7 @@ public class PlayerListenerTest {
     private Player mockPlayer;
 
     private void assertCorrectAction(final MoveByAction actionAdded, final float expectedXMoveBy,
-            final float expectedYMoveBy, final float expectedDuration) {
+                                     final float expectedYMoveBy, final float expectedDuration) {
         assertEquals(expectedXMoveBy, actionAdded.getAmountX(), 0.0f);
         assertEquals(expectedYMoveBy, actionAdded.getAmountY(), 0.0f);
         assertEquals(expectedDuration, actionAdded.getDuration(), 0.0f);
@@ -71,8 +70,7 @@ public class PlayerListenerTest {
     private <T extends Action> T getActionAdded(final Class<T> actionClass) {
         final ArgumentCaptor<T> actionCaptor = ArgumentCaptor.forClass(actionClass);
         verify(mockPlayer).addAction(actionCaptor.capture());
-        final T actionAdded = actionCaptor.getValue();
-        return actionAdded;
+        return actionCaptor.getValue();
     }
 
     @Before
@@ -97,7 +95,7 @@ public class PlayerListenerTest {
 
     @Test
     public void testTap() {
-        when(mockPlayer.getSpeed()).thenReturn(TEST_PLAYER_SPEED);
+        //when(mockPlayer.getSpeed()).thenReturn(TEST_PLAYER_SPEED);
         playerListener.tap(TEST_X, TEST_Y, TEST_COUNT, TEST_BUTTON);
 
         final SequenceAction actionAdded = getActionAdded(SequenceAction.class);

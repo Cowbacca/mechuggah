@@ -10,9 +10,8 @@ import uk.ac.rhul.cs.zwac076.mechuggah.maths.IntersectionChecker;
 
 /**
  * Actor with collision handling.
- * 
+ *
  * @author Angus J. Goldsmith
- * 
  */
 public class CollisionActor extends Actor implements Collidable {
     protected final Rectangle boundingRectangle;
@@ -20,7 +19,7 @@ public class CollisionActor extends Actor implements Collidable {
     protected float z;
 
     public CollisionActor(final float x, final float y, final float width, final float height,
-            final IntersectionChecker intersectionChecker) {
+                          final IntersectionChecker intersectionChecker) {
         setBounds(x, y, width, height);
         boundingRectangle = new Rectangle(x - width, y - height, width, height);
         this.intersectionChecker = intersectionChecker;

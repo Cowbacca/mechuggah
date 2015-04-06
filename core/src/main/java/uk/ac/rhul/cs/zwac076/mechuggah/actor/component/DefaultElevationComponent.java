@@ -21,6 +21,8 @@ public class DefaultElevationComponent implements ElevationComponent {
         this.upYScale = upYScale;
         this.collisionActor
                 = collisionActor;
+        originalXScale = collisionActor.getScaleX();
+        originalYScale = collisionActor.getScaleY();
 
     }
 
