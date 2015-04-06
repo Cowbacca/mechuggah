@@ -53,7 +53,6 @@ public class DefaultMovingComponent implements MovingComponent {
     public void reset() {
         frozen = false;
         speed = originalSpeed;
-        preFrozenSpeed = speed;
     }
 
     @Override
