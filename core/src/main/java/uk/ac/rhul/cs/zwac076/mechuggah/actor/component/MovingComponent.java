@@ -10,6 +10,5 @@ public interface MovingComponent extends Component {
 
     void freeze();
 
-
     void unFreeze();
 }

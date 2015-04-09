@@ -2,9 +2,12 @@ package uk.ac.rhul.cs.zwac076.mechuggah.actor.component;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import lombok.EqualsAndHashCode;
+
 /**
  * Created by angus on 4/5/15.
  */
+@EqualsAndHashCode
 public class DefaultMovingComponent implements MovingComponent {
     private final float acceleration;
     private float originalSpeed;
@@ -13,7 +16,7 @@ public class DefaultMovingComponent implements MovingComponent {
     private float preFrozenSpeed;
     private Actor actor;
 
-    public DefaultMovingComponent(float originalSpeed, float acceleration, Actor actor) {
+    protected DefaultMovingComponent(float originalSpeed, float acceleration, Actor actor) {
         this.originalSpeed = originalSpeed;
         speed = originalSpeed;
         frozen = false;

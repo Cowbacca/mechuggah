@@ -6,9 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 
 import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.DefaultElevationComponent;
-import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.DefaultMovingComponent;
 import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.ElevationComponent;
 import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.MovingComponent;
+import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.MovingComponentFactory;
 import uk.ac.rhul.cs.zwac076.mechuggah.event.EventManager;
 import uk.ac.rhul.cs.zwac076.mechuggah.event.PlayerInputEvent;
 import uk.ac.rhul.cs.zwac076.mechuggah.event.PlayerInputEventListener;
@@ -18,9 +18,8 @@ import uk.ac.rhul.cs.zwac076.mechuggah.maths.IntersectionChecker;
 
 /**
  * Actor representing the player.
- * 
+ *
  * @author Angus J. Goldsmith
- * 
  */
 public class Player extends CollisionActor implements EventListener, MovingComponent, ElevationComponent {
     private Action powerUpAction;
@@ -30,10 +29,11 @@ public class Player extends CollisionActor implements EventListener, MovingCompo
     private ElevationComponent elevationComponent;
 
     public Player(final AnimationComponent animationComponent, final float x, final float y, final float width,
-            final float height, final float speed, final IntersectionChecker intersectionChecker) {
+                  final float height, final float speed, float acceleration,
+                  final IntersectionChecker intersectionChecker) {
         super(x, y, width, height, intersectionChecker);
         this.animationComponent = animationComponent;
-        movingComponent = new DefaultMovingComponent(speed, 10, this);
+        this.movingComponent = MovingComponentFactory.newFactory().createMovingComponent(speed, acceleration, this);
         elevationComponent = new DefaultElevationComponent(1.2f, 1.2f, this);
         EventManager.getInstance().registerListener(ResetGameEvent.class, this);
         registerInputEventListener();
@@ -82,8 +82,7 @@ public class Player extends CollisionActor implements EventListener, MovingCompo
     /**
      * Checks if the player is above a given y value.
      *
-     * @param y
-     *            the y value to check against.
+     * @param y the y value to check against.
      * @return whether or not the player is above.
      */
     public boolean isAbove(final float y) {

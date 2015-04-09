@@ -1,5 +1,11 @@
 package uk.ac.rhul.cs.zwac076.mechuggah.actor;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+
 import uk.ac.rhul.cs.zwac076.mechuggah.action.SpeedUpAction;
 import uk.ac.rhul.cs.zwac076.mechuggah.action.StuckAction;
 import uk.ac.rhul.cs.zwac076.mechuggah.event.EventManager;
@@ -9,37 +15,13 @@ import uk.ac.rhul.cs.zwac076.mechuggah.event.RemotePlayerCollidedEvent;
 import uk.ac.rhul.cs.zwac076.mechuggah.event.RemotePlayerInputEvent;
 import uk.ac.rhul.cs.zwac076.mechuggah.maths.IntersectionChecker;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-
 public class RemotePlayer extends Player {
-
-    private final class RemotePlayerCollidedEventListener implements EventListener {
-        @Override
-        public boolean handle(Event event) {
-            RemotePlayerCollidedEvent remotePlayerCollidedEvent = (RemotePlayerCollidedEvent) event;
-            switch (remotePlayerCollidedEvent.getCollisionType()) {
-            case STUCK:
-                addPowerUpAction(new StuckAction());
-            case SPEED_UP:
-                addPowerUpAction(new SpeedUpAction(200, 1f));
-                break;
-            default:
-                break;
-
-            }
-            return false;
-        }
-    }
 
     private Color colour;
 
     public RemotePlayer(AnimationComponent animationComponent, float x, float y, float width, float height,
-            float speed, IntersectionChecker intersectionChecker) {
-        super(animationComponent, x, y, width, height, speed, intersectionChecker);
+                        float speed, final float acceleration, IntersectionChecker intersectionChecker) {
+        super(animationComponent, x, y, width, height, speed, acceleration, intersectionChecker);
         EventManager.getInstance().registerListener(RemotePlayerCollidedEvent.class,
                 new RemotePlayerCollidedEventListener());
         colour = new Color(1f, 135f / 255f, 211f / 255f, 1);
@@ -72,5 +54,23 @@ public class RemotePlayer extends Player {
     @Override
     protected void registerInputEventListener() {
         EventManager.getInstance().registerListener(RemotePlayerInputEvent.class, new PlayerInputEventListener(this));
+    }
+
+    private final class RemotePlayerCollidedEventListener implements EventListener {
+        @Override
+        public boolean handle(Event event) {
+            RemotePlayerCollidedEvent remotePlayerCollidedEvent = (RemotePlayerCollidedEvent) event;
+            switch (remotePlayerCollidedEvent.getCollisionType()) {
+                case STUCK:
+                    addPowerUpAction(new StuckAction());
+                case SPEED_UP:
+                    addPowerUpAction(new SpeedUpAction(200, 1f));
+                    break;
+                default:
+                    break;
+
+            }
+            return false;
+        }
     }
 }
