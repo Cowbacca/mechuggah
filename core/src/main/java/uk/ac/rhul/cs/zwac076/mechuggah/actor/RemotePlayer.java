@@ -21,7 +21,7 @@ public class RemotePlayer extends Player {
 
     public RemotePlayer(AnimationComponent animationComponent, float x, float y, float width, float height,
                         float speed, final float acceleration, IntersectionChecker intersectionChecker) {
-        super(animationComponent, x, y, width, height, speed, acceleration, intersectionChecker);
+        super(animationComponent, x, y, width, height, speed, acceleration, 1.2f, 1.2f, intersectionChecker);
         EventManager.getInstance().registerListener(RemotePlayerCollidedEvent.class,
                 new RemotePlayerCollidedEventListener());
         colour = new Color(1f, 135f / 255f, 211f / 255f, 1);

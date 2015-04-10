@@ -5,8 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 
-import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.DefaultElevationComponent;
 import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.ElevationComponent;
+import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.ElevationComponentFactory;
 import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.MovingComponent;
 import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.MovingComponentFactory;
 import uk.ac.rhul.cs.zwac076.mechuggah.event.EventManager;
@@ -30,11 +30,11 @@ public class Player extends CollisionActor implements EventListener, MovingCompo
 
     public Player(final AnimationComponent animationComponent, final float x, final float y, final float width,
                   final float height, final float speed, float acceleration,
-                  final IntersectionChecker intersectionChecker) {
+                  float upXScale, float upYScale, final IntersectionChecker intersectionChecker) {
         super(x, y, width, height, intersectionChecker);
         this.animationComponent = animationComponent;
-        this.movingComponent = MovingComponentFactory.newFactory().createMovingComponent(speed, acceleration, this);
-        elevationComponent = new DefaultElevationComponent(1.2f, 1.2f, this);
+        movingComponent = MovingComponentFactory.newFactory().createMovingComponent(speed, acceleration, this);
+        elevationComponent = ElevationComponentFactory.newFactory().createElevationComponent(upXScale, upYScale, this);
         EventManager.getInstance().registerListener(ResetGameEvent.class, this);
         registerInputEventListener();
     }

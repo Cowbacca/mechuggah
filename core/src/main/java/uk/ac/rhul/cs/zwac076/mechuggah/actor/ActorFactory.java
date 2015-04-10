@@ -134,7 +134,7 @@ public class ActorFactory {
         final Player player = new Player(playerAnimation, (worldWidth / 2) - (playerAnimation.getWidth() / 2),
                 defaultPlayerY, playerAnimation.getWidth(),
                 playerAnimation.getHeight() / DEFAULT_PLAYER_HEIGHT_DIVISOR, defaultPlayerSpeed,
-                defaultPlayerAcceleration, intersectionChecker);
+                defaultPlayerAcceleration, 1.2f, 1.2f, intersectionChecker);
         stage.addCollidableActor(player);
         return player;
     }

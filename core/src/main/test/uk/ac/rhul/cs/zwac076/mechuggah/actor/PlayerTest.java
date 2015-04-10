@@ -13,6 +13,8 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.ElevationComponent;
+import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.ElevationComponentFactory;
 import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.MovingComponent;
 import uk.ac.rhul.cs.zwac076.mechuggah.actor.component.MovingComponentFactory;
 import uk.ac.rhul.cs.zwac076.mechuggah.maths.IntersectionChecker;
@@ -25,10 +27,15 @@ import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(MovingComponentFactory.class)
+@PrepareForTest({MovingComponentFactory.class, ElevationComponentFactory.class})
 public class PlayerTest {
 
     public static final float DISTANCE = 12.3f;
+    public static final float UP_X_SCALE = 1.1f;
+    public static final float UP_Y_SCALE = 1.2f;
+    public static final int DURATION = 123;
+    public static final double FLOAT_DELTA = 0.005;
+    public static final int STARTING_SCALE = 1;
     private static final float PARENT_ALPHA = 0;
     private static final float Y = 1;
     private static final float WIDTH = 2;
@@ -55,16 +62,28 @@ public class PlayerTest {
     private MovingComponentFactory mockMovingComponentFactory;
     @Mock
     private MovingComponent mockMovingComponent;
+    @Mock
+    private ElevationComponentFactory mockElevationComponentFactory;
+    @Mock
+    private CollisionActor mockCollisionActor;
+    @Mock
+    private ElevationComponent mockElevationComponent;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        mockStatic(MovingComponentFactory.class);
+        mockStatic(MovingComponentFactory.class, ElevationComponentFactory.class);
+
         PowerMockito.when(MovingComponentFactory.newFactory()).thenReturn(mockMovingComponentFactory);
         when(mockMovingComponentFactory.createMovingComponent(eq(SPEED), eq(ACCELERATION),
                 any(Actor.class))).thenReturn(mockMovingComponent);
 
-        player = new Player(mockAnimationComponent, X, Y, WIDTH, HEIGHT, SPEED, ACCELERATION, mockIntersectionChecker);
+        PowerMockito.when(ElevationComponentFactory.newFactory()).thenReturn(mockElevationComponentFactory);
+        when(mockElevationComponentFactory.createElevationComponent(eq(UP_X_SCALE), eq(UP_Y_SCALE),
+                any(CollisionActor.class))).thenReturn(mockElevationComponent);
+
+        player = new Player(mockAnimationComponent, X, Y, WIDTH, HEIGHT, SPEED, ACCELERATION, UP_X_SCALE, UP_Y_SCALE,
+                mockIntersectionChecker);
     }
 
     @Test
@@ -100,6 +119,16 @@ public class PlayerTest {
     }
 
     @Test
+    public void testReset() {
+        player.reset();
+
+        assertEquals(STARTING_SCALE, player.getScaleX(), FLOAT_DELTA);
+        assertEquals(STARTING_SCALE, player.getScaleY(), FLOAT_DELTA);
+        verify(mockElevationComponent).reset();
+        verify(mockMovingComponent).reset();
+    }
+
+    @Test
     public void testCalculateTimeTakenToTravel() {
         player.calculateTimeTakenToTravel(DISTANCE);
 
@@ -129,4 +158,34 @@ public class PlayerTest {
         verify(mockMovingComponent).unFreeze();
 
     }
+
+    @Test
+    public void testMoveUp() {
+        player.moveUp();
+
+        verify(mockElevationComponent).moveUp();
+    }
+
+    @Test
+    public void testMoveDown() {
+        player.moveDown();
+
+        verify(mockElevationComponent).moveDown();
+    }
+
+    @Test
+    public void testGetMoveUpAction() {
+        when(mockElevationComponent.getMoveUpAction(DURATION)).thenReturn(mockAction);
+
+        assertEquals(mockAction, player.getMoveUpAction(DURATION));
+
+    }
+
+    @Test
+    public void testGetMoveDownAction() {
+        when(mockElevationComponent.getMoveDownAction(DURATION)).thenReturn(mockAction);
+
+        assertEquals(mockAction, player.getMoveDownAction(DURATION));
+    }
+
 }

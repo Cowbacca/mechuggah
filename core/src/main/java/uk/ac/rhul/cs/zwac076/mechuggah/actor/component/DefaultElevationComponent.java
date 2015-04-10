@@ -3,11 +3,13 @@ package uk.ac.rhul.cs.zwac076.mechuggah.actor.component;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
+import lombok.EqualsAndHashCode;
 import uk.ac.rhul.cs.zwac076.mechuggah.actor.CollisionActor;
 
 /**
  * Created by angus on 4/5/15.
  */
+@EqualsAndHashCode
 public class DefaultElevationComponent implements ElevationComponent {
 
     private final CollisionActor collisionActor;
@@ -16,7 +18,7 @@ public class DefaultElevationComponent implements ElevationComponent {
     private float originalXScale;
     private float originalYScale;
 
-    public DefaultElevationComponent(float upXScale, float upYScale, CollisionActor collisionActor) {
+    protected DefaultElevationComponent(float upXScale, float upYScale, CollisionActor collisionActor) {
         this.upXScale = upXScale;
         this.upYScale = upYScale;
         this.collisionActor
